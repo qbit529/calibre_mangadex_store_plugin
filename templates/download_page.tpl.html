@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<!--
+ Copyright (c) 2025 qbit529
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
+ -->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manga Info</title>
+    <script>
+      const languageFlags = {
+        en: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAADEUlEQVR4nO2d23LjIBAFBxX//8vkgQpCDEJchgFLpx+SSiJk3O7SZc0mhsjRP46M+f/SOTKG9HGOfatyHmzkqvmHx4192nMLMuGjn7Sf+ZLp/iLhhXbutBZcH+Hry6DIbiYxwLhYurbp3VriluOtkfYTBcXnNmSOvOXcSKTNqbHssf4IUtKNtHPUKyYiQ+7Ijctui7RPmiz7re057DFXpN2l2H8+0jyR9j19lj02yvS6BdKOGFHsRxy3YxvTfmvd6VPrskzxneFg2rTurn0eIoo9R+Fnd+NT3pi2VMgBSwykLavYkxZd2voDaYuHHMgUnYz5TtqTFHtuiy6Nf13a80IOlIpO9vLWtGcr9jwXHe8x3emPpz0YckbIPVVFJ3sfTLu8uQ7pSz4t5EBD0fFj9KS9zT+SpBXPDDnQIzo8Xjqb7Y8kPccKZrmPftH0a2kvCTkwJDrM4MJ+aS8MOdB8Msyy8/WfztXbIyZeQDNOps3259a8B6n9TLNM4qI9wrrHRS9V7BE4RnMGb23kZ1NG9KR3Owu32+0aR+rQsZQpRQMORCsB0UpAtBIQrYTZ+lT9IlC0EhCtBEQrAdFKQLQSEK0ERCsB0UpAtBIQrQREKwHRStjN3wEiwltZoAWIVgKilYBoJSBaCTtvhdD4qnoZ2lcqzWBK0ZmVuKss1+w5+RVIc5YRYzVpaQ+CdUsWPWhZfHVhusP2V0IwbZmF6OMhT11Mej5U4/L4mhGVCBSdORwvDZnTkzY7cA8yJLrzpHe1rEbqWvck2S96/5A5C9PuEf1bIXOWpN18Mhy8QF7+n5M96Tmv6yTZ9Fwaih68DVlyrCgzeP3XlHZV0TtfvY2jc/33XPRutyEzULi1KRX97pA5U9O+LfoLIXPmpZ0p+mshc2aknRb9zZA54mnbux9kB6e8K2SOYNpH/K3MsAJvDJkjlbYdV/wFLrF2pX2k28PyPSNpWwpHIiiuoC9tE35RNyw30ZG2ffg7LATFeZrSdmQOU34XHJaL1KdticiQy3QNxXXUpH3+wZu0a1hupJC2d/sHol022yJ0JyMAAAAASUVORK5CYII=",
+        es: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAAAzklEQVR4nO3asQ0AIAwEMUDsvzJscRTYE0SnLzPPoLBeH/ALoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjggdEToidEToiNCRPbwqJSw6InRE6IjQEaEjQkeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6Mj0etew6IjQEaEjQkeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6MgF7xIDnlE4hwIAAAAASUVORK5CYII=",
+        ro: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAAAz0lEQVR4nO3QQRHAMAzAsHT8OXcsnEclAr7zmbmz4d6z0p2l7LeTfY/REaMjRkeMjhgdMTpidMToiNERoyNGR4yOGB0xOmJ0xOiI0RGjI0ZHjI4YHTE6YnTE6IjREaMjRkeMjhgdMTpidMToiNERoyNGR4yOGB0xOmJ0xOiI0RGjI0ZHjI4YHTE6YnTE6IjREaMjRkeMjhgdMTpidMToiNERoyNGR4yOGB0xOmJ0xOiI0RGjI0ZHjI4YHTE6YnTE6IjREaMjRkeMjhgdMTryA9BVA58Uiz86AAAAAElFTkSuQmCC",
+        "es-la":
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAABVElEQVR4nO3aMQ7CMBAF0Q3i3nBzKFwnMok1/jEzbQpHTysX1m71ril9Xp85B2/blGMfU079w4SGEhpKaCihoYSGEhpKaCihoYSGEhpKaCihoYSGEhpKaCihoYSGEhpKaCihoYSGEhpKaCihoZ6zf6C/vQ2jSRtPP3YL6OMlrvY1nTscun9PLp07+Y4+sY04Z4Gxp1jo02Sh1pnQF7ESrQOhhzDFWQdCr1ka9MBJzBrqNOhli4IePoNBQx0FvXJCQwkNJTSU0FBCQwkNFQU9/DU56Hk6Cnrl0qAHzmDQOFce9LIFQg+ZxKxxrkjouswUp1yp0HUBK1G5gqHrFFmocsXvdTS4nmflXOJWOHTrmDuduHUL6NY9QPdKvqOXSmgooaGEhhIaSmgooaGEhhIaSmgooaGEhhIaSmgooaGEhhIaSmgooaGEhhIaSmgooaGEhhIa6gvJVReqYBhN/wAAAABJRU5ErkJggg==",
+        po: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAAAzUlEQVR4nO3QwRHAMAzDMLeTZ/N0C/hRYgHp+MyZLXdv2nu3D/xFoZFCI4VGCo0UGik0Umik0EihkUIjhUYKjRQaKTRSaKTQSKGRQiOFRgqNFBopNFJopNBIoZFCI4VGCo0UGik0Umik0EihkUIjhUYKjRQaKTRSaKTQSKGRQiOFRgqNFBopNFJopNBIoZFCI4VGCo0UGik0Umik0EihkUIjhUYKjRQaKTRSaKTQSKGRQiOFRgqNFBopNFJopNBIoZFCI4VGCo0UGik08gE1OAKf38T08gAAAABJRU5ErkJggg==",
+        "po-br":
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAAB2UlEQVR4nO3ZUU7CUBhE4cGNKyvXhxsTjYIttDNn4n820LkfSQvlojdNhl7SA/5LA21qoE0NtKmBNjXQpgba1ECbGmhTA21qoE0NtKlK6PfX9IL99UEv5TrrMuivvl3WTdA/ZYusa6BvmbZYd0Df16ywLoDe4si3pkNvF4Rbo6H32pGtudCPqWGtodDPeDGtidDPSwGtcdBHGdGsWdDH6qCsQdAol8OjQJ+kzPnwENCnckCs89AGCIJ1GNpGELdOQpsPn7WOQUeOHbTOQAcPnLp0ADp+u4wMcEPHlVf+GVZoiPLKPMYHjVJeOSeZoIHKK9swBzRWeeWZ54C+XA0XeTzPPNOtA2ttG+Z7GAKtnZOsX+9Q1uYx7h8sEGv/jMBP8Lh1ZEDmpVLQOnXp2GvSyIGDH3Dyxb/52NlbVvivLNvh4w+G/J+zBoK4sgjQOhmCoCwItKTL9RQRiLI40KtjXTjKokHrOB2UsoDQOsKIpiwmtJ6TAioLC61HvZjKIkNrvxpWWXBo7bEjK4sPrW2CcGVVQOsvR76yWqB1W7NCWUXQ+s20RVld0PouW6SsOmh9+nYpqxFahcoqhW5soE0NtKmBNjXQpgba1ECbGmhTA21qoE0NtKmBNvUB7uBtIN4pMoQAAAAASUVORK5CYII=",
+        ru: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABQCAIAAABd+SbeAAAA0ElEQVR4nO3asQ3AMAwEMSv776xMkXMRcgLh8KVmdw/fe24f8BdCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjggdEToidEToiNARoSNzjk+lgkVHhI4IHRE6InRE6IjQEaEjQkeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI6Mh7CGRUeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjrw2cgWZqBiRigAAAABJRU5ErkJggg==",
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #1e1e1e;
+        --card: #2a2a2a;
+        --accent: #3a3a3a;
+        --text: #e0e0e0;
+        --outline: #444;
+        --highlight: #5a5a5a;
+        --font-base: 14px;
+        --gutter: 1rem;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        font-size: var(--font-base);
+        line-height: 1.4;
+        padding: var(--gutter);
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--outline);
+        border-radius: 8px;
+        padding: var(--gutter);
+        max-width: 900px;
+        margin: 0 auto;
+        min-height: calc(100vh - 2 * var(--gutter));
+      }
+      .content {
+        display: grid;
+        grid-template-columns: 33% 67%;
+        gap: var(--gutter);
+      }
+      .left-panel,
+      .right-panel {
+        display: flex;
+        flex-direction: column;
+      }
+      .left-panel {
+        align-items: flex-start;
+      }
+      .right-panel {
+        padding-right: var(--gutter);
+        min-height: 0;
+      }
+      .cover {
+        width: 100%;
+        border-radius: 6px;
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--outline);
+        flex-shrink: 0;
+      }
+      .description {
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        max-height: 100%;
+        overflow: hidden;
+        word-break: break-word;
+        white-space: pre-wrap;
+        width: 100%;
+      }
+      .meta {
+        margin-bottom: var(--gutter);
+        width: 100%;
+      }
+      #title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+      }
+      #authors {
+        font-size: 0.9rem;
+        color: var(--highlight);
+        text-align: left;
+        margin-top: 0.25rem;
+      }
+      #tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+      }
+      .tag {
+        padding: 0.25rem 0.5rem;
+        border: 1px solid var(--outline);
+        border-radius: 999px;
+        font-size: 0.75rem;
+        background: var(--accent);
+        white-space: nowrap;
+        line-height: 0.6;
+      }
+      .volumes-error {
+        border-radius: 6px;
+        padding: 0.75rem;
+        min-height: 200px;
+        position: relative;
+        width: 100%;
+      }
+      .volumes-error::before {
+        content: "No downloadable volume in a suitable language was found";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #f44;
+        font-style: italic;
+        font-size: 0.85rem;
+      }
+      #language-selector {
+        text-align: right;
+      }
+      .flag {
+        width: 1.5rem;
+        border-radius: 3px;
+      }
+
+      /* Volumes container */
+      .volumes-tabs {
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* Rounded tab bar */
+      .tabs {
+        display: flex;
+        background: var(--card);
+        padding: 0.25rem;
+        gap: 0.2rem;
+        border-radius: 8px 8px 0 0;
+        margin-left: auto;
+        margin-right: var(--gutter);
+      }
+      .tab {
+        padding: 0.2rem;
+        background: var(--accent);
+        border: 1px solid var(--outline);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: var(--text);
+        line-height: 0;
+      }
+      .tab:hover {
+        background: var(--highlight);
+      }
+      .tab.active {
+        border-color: var(--text);
+      }
+
+      /* Panel area */
+      .tab-panels {
+        flex: 1;
+        background: var(--card);
+        padding: var(--gutter);
+        overflow-y: auto;
+        border-radius: 0 0 8px 8px;
+      }
+      .tab-panel {
+        display: none;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* Volume row layout */
+      .volume-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--outline);
+        font-size: 0.85rem;
+        position: relative;
+      }
+      .volume-title {
+        flex: 1;
+        white-space: nowrap;
+        padding-right: 6px;
+      }
+      .chapter-range {
+        flex: 2;
+        color: var(--highlight);
+        white-space: nowrap;
+        padding-right: 6px;
+      }
+      .download-btn {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        padding: 0.25rem 0.75rem;
+        background: var(--accent);
+        border: 1px solid var(--outline);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        color: var(--text);
+      }
+      .download-btn:hover:not(:disabled) {
+        background: var(--highlight);
+        border-color: var(--text);
+      }
+      .download-btn:disabled {
+        opacity: 0.8;
+        cursor: default;
+      }
+      .dots::after {
+        content: "."; /* start with one dot */
+        animation: ellipsis 900ms linear infinite;
+      }
+
+      @keyframes ellipsis {
+        /* at 0 ms (0%)    → . */
+        0% {
+          content: ".";
+        }
+        /* at 300 ms (33%) → .. */
+        33.333% {
+          content: "..";
+        }
+        /* at 600 ms (66%) → ... */
+        66.666% {
+          content: "...";
+        }
+        /* at 900 ms (100%) → . (and loop) */
+        100% {
+          content: ".";
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="content">
+        <div class="left-panel">
+          <img id="cover" class="cover" src="" alt="Cover thumbnail" />
+          <div class="description" id="description"></div>
+        </div>
+        <div class="right-panel">
+          <div class="meta">
+            <h1 id="title"></h1>
+            <p id="authors"></p>
+            <div id="tags"></div>
+          </div>
+          <!-- Volumes Section -->
+          <div class="volumes-tabs">
+            <nav class="tabs" id="tabs"></nav>
+            <section class="tab-panels">
+              <!--div class="tab-panel">
+                <div class="volume-row">
+                  <span class="volume-title">Volume 1</span>
+                  <span class="chapter-range">Chapter 1-5</span>
+                  <button class="download-btn" title="Download Volume 1">
+                    Download
+                  </button>
+                </div>
+              </div-->
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const manga = {/* manga_json */};
+
+      // Populate fields
+      document.getElementById("cover").src = manga.cover_url;
+      document.getElementById("description").textContent = manga.description;
+      if (manga.description.trim() === "") {
+        document.getElementById("description").remove();
+      }
+      document.getElementById("title").textContent = manga.title;
+      document.getElementById("title").title = manga.title;
+      document.getElementById("authors").textContent = manga.authors.join(", ");
+
+      const tagsContainer = document.getElementById("tags");
+      manga.tags.unshift(manga.content_rating.toUpperCase());
+      manga.tags.forEach((tag) => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag;
+        tagsContainer.appendChild(span);
+      });
+
+      const tabs = document.getElementById("tabs");
+      const tabsPanels = document.querySelector(".tab-panels");
+      const availableLanguages = Object.keys(languageFlags).filter(
+        (lang) => manga.translated_languages.indexOf(lang) != -1
+      );
+      let totalVolumes = 0;
+      availableLanguages.forEach((lang) => {
+        const img = document.createElement("img");
+        img.src = languageFlags[lang];
+        img.title = lang;
+        img.className = "flag";
+        const button = document.createElement("button");
+        button.className = "tab";
+        button.setAttribute("data-lang", lang);
+        button.addEventListener("click", () => activateLanguage(lang));
+        button.appendChild(img);
+        tabs.appendChild(button);
+        const tabPanel = document.createElement("div");
+        tabPanel.className = "tab-panel";
+        tabPanel.setAttribute("data-lang", lang);
+        const volumes = Object.values(manga.volumes[lang]).sort((a, b) => {
+          ka = isNaN(a.volume) ? 1e6 : Number(a.volume);
+          kb = isNaN(b.volume) ? 1e6 : Number(b.volume);
+          return ka - kb;
+        });
+        const splitVolumeSize = Math.ceil(manga.max_volume_size / 2);
+        const chaptersWithVolumeAndPart = manga.volumes[lang]
+          .map((v) => {
+            if (v.chapters.length > manga.max_volume_size) {
+              v.chapters.forEach((ch, i) => {
+                ch.part = "" + Math.ceil((i + 1) / splitVolumeSize);
+              });
+            }
+            v.chapters.forEach((ch) => {
+              ch.volName = v.name;
+              ch.volDisplayName =
+                "Volume " + ch.volName + (ch.part ? " Part " + ch.part : "");
+            });
+            return v.chapters;
+          })
+          .flat();
+        const splitVolumes = Object.values(
+          chaptersWithVolumeAndPart.reduce((ret, ch) => {
+            ret[ch.volDisplayName] = ret[ch.volDisplayName] || [];
+            ret[ch.volDisplayName].push(ch);
+            return ret;
+          }, {})
+        ).map((cha) => ({
+          name: cha[0].volName,
+          volDisplayName: cha[0].volDisplayName,
+          part: cha[0].part,
+          chapters: cha,
+        }));
+        console.log(splitVolumes);
+        for (_vol of splitVolumes) {
+          totalVolumes++;
+          const vol = JSON.parse(JSON.stringify(_vol));
+          const volumeRow = document.createElement("div");
+          volumeRow.className = "volume-row";
+          const title = document.createElement("span");
+          title.className = "volume-title";
+          title.innerText = vol.volDisplayName;
+          volumeRow.appendChild(title);
+          const chapterRange = document.createElement("span");
+          chapterRange.className = "chapter-range";
+          const chapterNumbers = Object.values(vol.chapters).map((c) =>
+            isNaN(c.name) ? 0 : +c.name
+          );
+          const minChapter = Math.min(...chapterNumbers);
+          const maxChapter = Math.max(...chapterNumbers);
+          chapterRange.innerText = "Chapter " + minChapter + "-" + maxChapter;
+          const chapterNamesParameter = encodeURIComponent(
+            JSON.stringify(vol.chapters.map((c) => c.name))
+          );
+          volumeRow.appendChild(chapterRange);
+          const downloadButton = document.createElement("button");
+          downloadButton.className = "download-btn";
+          downloadButton.title = "Download " + title.innerText;
+          downloadButton.innerText = "Download";
+          downloadButton.addEventListener("click", async () => {
+            setDownloadButtonState(downloadButton, "scheduled");
+            const res = await (
+              await fetch(
+                "/to_cbz?manga_id=" +
+                  manga.id +
+                  "&language=" +
+                  lang +
+                  "&volume_name=" +
+                  vol.name +
+                  "&chapter_names=" +
+                  chapterNamesParameter +
+                  (vol.part ? "&part=" + vol.part : "") +
+                  "&prefix=" +
+                  manga.title.toLowerCase().replace(/[^a-z]/g, "")
+              )
+            ).json();
+            const task_id = res["task_id"];
+            setDownloadButtonState(downloadButton, res.status, res.progress);
+            while (1) {
+              await new Promise((r) => setTimeout(r, 1e3));
+              const statusRes = await (
+                await fetch("/task/" + task_id + "/status")
+              ).json();
+              setDownloadButtonState(
+                downloadButton,
+                statusRes.status,
+                statusRes.progress
+              );
+              if (["scheduled", "running"].indexOf(statusRes.status) === -1) {
+                if (statusRes.status !== "completed") {
+                  alert(statusRes.status);
+                } else {
+                  downloadURL(statusRes.url);
+                }
+                break;
+              }
+            }
+            await new Promise((r) => setTimeout(r, 5e3));
+            setDownloadButtonState(downloadButton);
+          });
+          volumeRow.appendChild(downloadButton);
+          tabPanel.appendChild(volumeRow);
+        }
+        tabsPanels.appendChild(tabPanel);
+      });
+      if (totalVolumes === 0) {
+        const div = document.createElement("div");
+        div.className = "volumes-error";
+        document.querySelector(".right-panel").appendChild(div);
+        document.querySelector(".volumes-tabs").remove();
+      } else {
+        activateLanguage(availableLanguages[0]);
+      }
+
+      function setDownloadButtonState(downloadButton, state, progress) {
+        downloadButton.disabled = true;
+        if (state === "scheduled") {
+          downloadButton.innerHTML = '<span class="dots">Pending</span>';
+          return;
+        }
+        if (state === "running" && !progress) {
+          downloadButton.innerHTML = '<span class="dots">Metadata</span>';
+          return;
+        }
+        if (state === "running" && progress) {
+          downloadButton.innerHTML =
+            '<span class="dots">Pages (' + progress + ")</span>";
+          return;
+        }
+        if (state === "completed") {
+          downloadButton.innerHTML = "Download";
+          return;
+        }
+        downloadButton.innerHTML = "Download";
+        downloadButton.disabled = false;
+      }
+      function activateLanguage(lang) {
+        const activeElements = [...document.querySelectorAll(".active")];
+        activeElements.forEach((el) => el.classList.remove("active"));
+        const newActiveElements = [
+          ...document.querySelectorAll('[data-lang="' + lang + '"]'),
+        ];
+        newActiveElements.forEach((el) => el.classList.add("active"));
+      }
+      function downloadURL(url, filename) {
+        console.log("downloading", url, filename);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename || ""; // the “download” attribute
+        document.body.appendChild(a); // Firefox requires it in the DOM
+        a.click(); // trigger the download
+        document.body.removeChild(a); // cleanup
+      }
+    </script>
+  </body>
+</html>
