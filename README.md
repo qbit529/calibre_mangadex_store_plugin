@@ -15,7 +15,7 @@ A calibre plugin to access MangaDex and download issues in CBZ format with metad
 - **Connection Throttling**: Fixed semaphore limits concurrent requests to avoid rate limiting (not configurable).  
 - **CBZ Download**: Downloads chapters as CBZ archives.  
 - **Metadata**: Embeds `ComicInfo.xml` and `ComicBookInfo` metadata in each CBZ.
-- **Auto-rotation**: Large panels are automatically rotatet 90 degrees for better viewing on kindle
+- **Auto-rotation**: Large panels are automatically rotated 90 degrees for better viewing on smaller ebook readers.
 
 ## Usage
 
