@@ -64,8 +64,11 @@ async def get_manga_info(manga_id: str) -> MangaInfo:
 async def get_volumes_and_chapters(manga_id: str, language: str) -> list[VolumeInfo]:
     url = f"/manga/{manga_id}/aggregate?translatedLanguage[]=" + language
     res = await _get_mangadex(url)
-    ret = [VolumeInfo.from_api(v) for v in res.get(
-        "volumes", {}).values()]
+    volumes = res.get("volumes", {})
+    # Fix for bug caused by MangaDex API returning empty array instead of empty object
+    if isinstance(volumes, list):
+        return []
+    ret = [VolumeInfo.from_api(v) for v in volumes.values()]
     ret.sort(key=lambda v: v.sort)
     return ret
 
