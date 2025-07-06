@@ -81,7 +81,10 @@ async def get_volume_and_chapter_by_language_dict(
             get_volumes_and_chapters(manga_id, lang))
     ret = {}
     for lang in languages:
-        ret[lang] = [v.to_dict() for v in (await tasks[lang])]
+        dict = [v.to_dict() for v in (await tasks[lang])]
+        if len(dict) == 0:
+            continue
+        ret[lang] = dict
     return ret
 
 
