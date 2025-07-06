@@ -336,7 +336,10 @@
       const tabs = document.getElementById("tabs");
       const tabsPanels = document.querySelector(".tab-panels");
       const availableLanguages = Object.keys(languageFlags).filter(
-        (lang) => manga.translated_languages.indexOf(lang) != -1
+        (lang) => 
+          manga.translated_languages.indexOf(lang) != -1 &&
+          manga.volumes[lang] &&
+          Object.keys(manga.volumes[lang]).length > 0
       );
       let totalVolumes = 0;
       availableLanguages.forEach((lang) => {
