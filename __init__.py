@@ -26,7 +26,7 @@ from calibre.customize import StoreBase
 
 class MangaDexStore(StoreBase):
     name = "MangaDex"
-    version = (1, 2, 0)
+    version = (1, 2, 1)
     description = "Searches for mangas and converts them to CBZ from a list of known websites."
     author = "qbit529"
     drm_free_only = True
