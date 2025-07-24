@@ -49,7 +49,7 @@ class LocalServer(threading.Thread):
     def run(self):
         try:
             Handler.parent = self
-            self.httpd = ThreadingHTTPServer(('0.0.0.0', self.port), Handler)
+            self.httpd = ThreadingHTTPServer(('127.0.0.1', self.port), Handler)
             self.httpd.serve_forever(poll_interval=0.5)
         except OSError as e:
             print(f'Calibre plugin server failed: {e}')
